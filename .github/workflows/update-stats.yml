@@ -2,7 +2,7 @@ name: Update Repository Stats
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -12,41 +12,41 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Update repository stats
         id: update
         run: |
           # Save original content for comparison
           cp profile/README.md profile/README.md.orig
-          
+
           # Function to fetch repo stats
           fetch_stats() {
-            curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            curl -s \
             "https://api.github.com/repos/MagaluCloud/$1" | \
             jq -r '[.stargazers_count, .forks_count] | @tsv'
           }
-          
+
           # Get stats for each repo
           MGCCLI_STATS=$(fetch_stats "mgccli")
           PROVIDER_STATS=$(fetch_stats "terraform-provider-mgc")
           EXAMPLES_STATS=$(fetch_stats "terraform-examples")
           SDK_STATS=$(fetch_stats "mgc-sdk-go")
-          
+
           README_PATH="profile/README.md"
-          
-          # Use sed to update star and fork counts
-          sed -i -E "s/(mgccli.*Shell.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $MGCCLI_STATS | cut -f1) \| 🍴 $(echo $MGCCLI_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/(terraform-provider-mgc.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $PROVIDER_STATS | cut -f1) \| 🍴 $(echo $PROVIDER_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/(terraform-examples.*HCL.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $EXAMPLES_STATS | cut -f1) \| 🍴 $(echo $EXAMPLES_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/(mgc-sdk-go.*Go.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $SDK_STATS | cut -f1) \| 🍴 $(echo $SDK_STATS | cut -f2)/" $README_PATH
-          
+
+          # Updated sed commands with more precise patterns and proper escaping
+          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*mgccli/⭐️ $(echo $MGCCLI_STATS | cut -f1) \| 🍴 $(echo $MGCCLI_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*terraform-provider-mgc/⭐️ $(echo $PROVIDER_STATS | cut -f1) \| 🍴 $(echo $PROVIDER_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*terraform-examples/⭐️ $(echo $EXAMPLES_STATS | cut -f1) \| 🍴 $(echo $EXAMPLES_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*mgc-sdk-go/⭐️ $(echo $SDK_STATS | cut -f1) \| 🍴 $(echo $SDK_STATS | cut -f2)/" $README_PATH
+
           # Check if there were any actual changes
           if cmp -s profile/README.md profile/README.md.orig; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
-          
+
       - name: Commit and push if changed
         if: steps.update.outputs.has_changes == 'true'
         run: |
