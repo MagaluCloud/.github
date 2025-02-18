@@ -13,32 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
       - name: Update repository stats
         id: update
         run: |
           # Save original content for comparison
           cp profile/README.md profile/README.md.orig
 
-          # Function to fetch repo stats
-          fetch_stats() {
-            curl -s \
-            "https://api.github.com/repos/MagaluCloud/$1" | \
-            jq -r '[.stargazers_count, .forks_count] | @tsv'
-          }
-
-          # Get stats for each repo
-          MGCCLI_STATS=$(fetch_stats "mgccli")
-          PROVIDER_STATS=$(fetch_stats "terraform-provider-mgc")
-          EXAMPLES_STATS=$(fetch_stats "terraform-examples")
-          SDK_STATS=$(fetch_stats "mgc-sdk-go")
-
-          README_PATH="profile/README.md"
-
-          # Updated sed commands with more precise patterns and proper escaping
-          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*mgccli/⭐️ $(echo $MGCCLI_STATS | cut -f1) \| 🍴 $(echo $MGCCLI_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*terraform-provider-mgc/⭐️ $(echo $PROVIDER_STATS | cut -f1) \| 🍴 $(echo $PROVIDER_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*terraform-examples/⭐️ $(echo $EXAMPLES_STATS | cut -f1) \| 🍴 $(echo $EXAMPLES_STATS | cut -f2)/" $README_PATH
-          sed -i -E "s/⭐️ [0-9]+ \| 🍴 [0-9]+.*mgc-sdk-go/⭐️ $(echo $SDK_STATS | cut -f1) \| 🍴 $(echo $SDK_STATS | cut -f2)/" $README_PATH
+          # Run the Go program
+          go run cmd/update-stats/main.go
 
           # Check if there were any actual changes
           if cmp -s profile/README.md profile/README.md.orig; then
