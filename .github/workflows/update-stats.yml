@@ -2,8 +2,8 @@ name: Update Repository Stats
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight
-  workflow_dispatch:      # Allow manual trigger
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update-stats:
@@ -14,7 +14,11 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Update repository stats
+        id: update
         run: |
+          # Save original content for comparison
+          cp profile/README.md profile/README.md.orig
+          
           # Function to fetch repo stats
           fetch_stats() {
             curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
@@ -28,7 +32,6 @@ jobs:
           EXAMPLES_STATS=$(fetch_stats "terraform-examples")
           SDK_STATS=$(fetch_stats "mgc-sdk-go")
           
-          # Update README with new stats
           README_PATH="profile/README.md"
           
           # Use sed to update star and fork counts
@@ -37,10 +40,18 @@ jobs:
           sed -i -E "s/(terraform-examples.*HCL.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $EXAMPLES_STATS | cut -f1) \| 🍴 $(echo $EXAMPLES_STATS | cut -f2)/" $README_PATH
           sed -i -E "s/(mgc-sdk-go.*Go.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $SDK_STATS | cut -f1) \| 🍴 $(echo $SDK_STATS | cut -f2)/" $README_PATH
           
+          # Check if there were any actual changes
+          if cmp -s profile/README.md profile/README.md.orig; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
       - name: Commit and push if changed
+        if: steps.update.outputs.has_changes == 'true'
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add profile/README.md
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update repository stats"
+          git commit -m "Update repository stats"
           git push
