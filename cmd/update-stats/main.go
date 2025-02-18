@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"text/template"
 )
 
@@ -44,10 +43,7 @@ func fetchRepoStats(repo string) (RepoStats, error) {
 }
 
 func main() {
-	basePath := filepath.Join("..", "..")
-
 	data := TemplateData{}
-
 	mgccli, err := fetchRepoStats("mgccli")
 	if err != nil {
 		fmt.Printf("Error fetching mgccli stats: %v\n", err)
@@ -76,13 +72,13 @@ func main() {
 	}
 	data.Sdk = sdk
 
-	tmpl, err := template.ParseFiles(filepath.Join(basePath, "cmd/update-stats/README.tmpl"))
+	tmpl, err := template.ParseFiles("cmd/update-stats/README.tmpl")
 	if err != nil {
 		fmt.Printf("Error parsing template: %v\n", err)
 		return
 	}
 
-	output, err := os.Create(filepath.Join(basePath, "profile/README.md"))
+	output, err := os.Create("profile/README.md")
 	if err != nil {
 		fmt.Printf("Error creating output file: %v\n", err)
 		return
