@@ -1,0 +1,46 @@
+name: Update Repository Stats
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+  workflow_dispatch:      # Allow manual trigger
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Update repository stats
+        run: |
+          # Function to fetch repo stats
+          fetch_stats() {
+            curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/MagaluCloud/$1" | \
+            jq -r '[.stargazers_count, .forks_count] | @tsv'
+          }
+          
+          # Get stats for each repo
+          MGCCLI_STATS=$(fetch_stats "mgccli")
+          PROVIDER_STATS=$(fetch_stats "terraform-provider-mgc")
+          EXAMPLES_STATS=$(fetch_stats "terraform-examples")
+          SDK_STATS=$(fetch_stats "mgc-sdk-go")
+          
+          # Update README with new stats
+          README_PATH="profile/README.md"
+          
+          # Use sed to update star and fork counts
+          sed -i -E "s/(mgccli.*Shell.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $MGCCLI_STATS | cut -f1) \| 🍴 $(echo $MGCCLI_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/(terraform-provider-mgc.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $PROVIDER_STATS | cut -f1) \| 🍴 $(echo $PROVIDER_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/(terraform-examples.*HCL.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $EXAMPLES_STATS | cut -f1) \| 🍴 $(echo $EXAMPLES_STATS | cut -f2)/" $README_PATH
+          sed -i -E "s/(mgc-sdk-go.*Go.*⭐️) [0-9]+ \| 🍴 [0-9]+/\1 $(echo $SDK_STATS | cut -f1) \| 🍴 $(echo $SDK_STATS | cut -f2)/" $README_PATH
+          
+      - name: Commit and push if changed
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add profile/README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update repository stats"
+          git push
