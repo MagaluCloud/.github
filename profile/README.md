@@ -15,7 +15,7 @@ Shell
 ### [terraform-provider-mgc](https://github.com/MagaluCloud/terraform-provider-mgc) 🌍
 
 Magalu Cloud Terraform Provider  
-⭐️ 12 | 🍴 1
+⭐️ 13 | 🍴 1
 
 ### [terraform-examples](https://github.com/MagaluCloud/terraform-examples) 🛠️
 
