@@ -21,7 +21,7 @@ Magalu Cloud Terraform Provider
 
 Examples of Terraform configurations for Magalu Cloud  
 HCL  
-⭐️ 14 | 🍴 7
+⭐️ 14 | 🍴 8
 
 ### [mgc-sdk-go](https://github.com/MagaluCloud/mgc-sdk-go) 📦
 
