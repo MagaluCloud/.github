@@ -27,7 +27,7 @@ HCL
 
 The MGC Go SDK provides a convenient way to interact with the Magalu Cloud API from Go applications  
 Go  
-⭐️ 5 | 🍴 3
+⭐️ 5 | 🍴 4
 
 ## About Us
 
