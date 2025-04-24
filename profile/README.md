@@ -17,12 +17,6 @@ Shell
 Magalu Cloud Terraform Provider  
 ⭐️ 14 | 🍴 1
 
-### [terraform-examples](https://github.com/MagaluCloud/terraform-examples) 🛠️
-
-Examples of Terraform configurations for Magalu Cloud  
-HCL  
-⭐️ 14 | 🍴 8
-
 ### [mgc-sdk-go](https://github.com/MagaluCloud/mgc-sdk-go) 📦
 
 The MGC Go SDK provides a convenient way to interact with the Magalu Cloud API from Go applications  
