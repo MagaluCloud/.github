@@ -10,18 +10,18 @@ Welcome to the official GitHub account of **Magalu Cloud**! We are a cloud servi
 
 Magalu Cloud Command Line Interface (CLI)  
 Shell  
-⭐️ 42 | 🍴 3
+⭐️ 0 | 🍴 0
 
 ### [terraform-provider-mgc](https://github.com/MagaluCloud/terraform-provider-mgc) 🌍
 
 Magalu Cloud Terraform Provider  
-⭐️ 17 | 🍴 3
+⭐️ 0 | 🍴 0
 
 ### [mgc-sdk-go](https://github.com/MagaluCloud/mgc-sdk-go) 📦
 
 The MGC Go SDK provides a convenient way to interact with the Magalu Cloud API from Go applications  
 Go  
-⭐️ 7 | 🍴 7
+⭐️ 0 | 🍴 0
 
 ## About Us
 
