@@ -15,13 +15,13 @@ Shell
 ### [terraform-provider-mgc](https://github.com/MagaluCloud/terraform-provider-mgc) 🌍
 
 Magalu Cloud Terraform Provider  
-⭐️ 25 | 🍴 3
+⭐️ 26 | 🍴 3
 
 ### [mgc-sdk-go](https://github.com/MagaluCloud/mgc-sdk-go) 📦
 
 The MGC Go SDK provides a convenient way to interact with the Magalu Cloud API from Go applications  
 Go  
-⭐️ 7 | 🍴 7
+⭐️ 8 | 🍴 7
 
 ## About Us
 
