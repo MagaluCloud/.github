@@ -10,12 +10,12 @@ Welcome to the official GitHub account of **Magalu Cloud**! We are a cloud servi
 
 Magalu Cloud Command Line Interface (CLI)  
 Shell  
-⭐️ 45 | 🍴 4
+⭐️ 46 | 🍴 4
 
 ### [terraform-provider-mgc](https://github.com/MagaluCloud/terraform-provider-mgc) 🌍
 
 Magalu Cloud Terraform Provider  
-⭐️ 26 | 🍴 3
+⭐️ 27 | 🍴 3
 
 ### [mgc-sdk-go](https://github.com/MagaluCloud/mgc-sdk-go) 📦
 
