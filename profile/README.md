@@ -21,7 +21,7 @@ Magalu Cloud Terraform Provider
 
 The MGC Go SDK provides a convenient way to interact with the Magalu Cloud API from Go applications  
 Go  
-⭐️ 10 | 🍴 8
+⭐️ 11 | 🍴 8
 
 ## About Us
 
