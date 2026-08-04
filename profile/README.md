@@ -10,7 +10,7 @@ Welcome to the official GitHub account of **Magalu Cloud**! We are a cloud servi
 
 Magalu Cloud Command Line Interface (CLI)  
 Shell  
-⭐️ 66 | 🍴 4
+⭐️ 67 | 🍴 4
 
 ### [terraform-provider-mgc](https://github.com/MagaluCloud/terraform-provider-mgc) 🌍
 
